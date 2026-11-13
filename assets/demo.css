@@ -1,0 +1,137 @@
+/* Extend(Ed) programs-page demo: the new components of the proposed layout, layered on the live
+   CAPS theme (whose stylesheets load from caps.washu.edu). Colors are WashU brand colors; fonts
+   come from the theme's own variables. */
+:root{
+  --xd-red:#BA0C2F; --xd-red-dark:#971B2F; --xd-green:#215732; --xd-green-tint:#E3EEE6;
+  --xd-gray:#D9D9D9; --xd-gray-light:#F4F4F3; --xd-ink:#1A1A1A; --xd-ink-2:#3D3D3D; --xd-gold:#F1B434;
+}
+[hidden]{display:none!important}
+.xd-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* Demo notice */
+.xd-demo-bar{position:sticky;top:0;z-index:100000;display:flex;flex-wrap:wrap;gap:.25rem 1rem;align-items:center;justify-content:space-between;background:#1a1a1a;color:#fff;border-bottom:3px solid var(--xd-red);padding:.45rem 1rem;font-family:var(--font-ivystyle,Calibri,Arial,sans-serif)}
+.xd-demo-bar p{margin:0;color:#fff;font-size:.8125rem;line-height:1.4}
+.xd-demo-bar strong{color:var(--xd-gold)}
+.xd-demo-bar a{color:#fff;font-size:.8125rem;text-decoration:underline}
+.xd-demo-bar a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* Keep focused items clear of the sticky bar; on phones the bar scrolls away with the page */
+@media (min-width:768px){html{scroll-padding-top:3.5rem}}
+@media (max-width:767px){.xd-demo-bar{position:static}}
+
+/* Status chips: always written out, never color alone */
+.xd-chip{display:inline-block;width:fit-content;margin:0 0 .75rem;padding:.2rem .6rem;border-radius:3px;font-weight:700;font-size:.8125rem;line-height:1.35;letter-spacing:.01em}
+.xd-chip--open{background:var(--xd-green-tint);color:#173F29}
+.xd-chip--notify{background:#EDEDEC;color:var(--xd-ink-2)}
+.xd-chip--enrolling{background:var(--xd-green);color:#fff}
+/* The theme colors card and panel paragraphs; keep the chip colors there */
+.xd-card p.xd-chip--open,.xd-panel p.xd-chip--open{color:#173F29}
+.xd-card p.xd-chip--notify,.xd-panel p.xd-chip--notify{color:var(--xd-ink-2)}
+
+/* The theme pads its blocks one by one; the demo's sections wrap blocks, so pad the content area on small screens */
+@media (max-width:61.49em){.xd-article .page-content{padding-left:var(--site-gutter,24px);padding-right:var(--site-gutter,24px)}}
+.xd-article .page-content{overflow-wrap:break-word}
+
+/* Hub intro */
+.xd-hub-intro{margin:0 0 2.25rem}
+.xd-facts{font-size:1.0625rem;margin:.25rem 0 1.25rem}
+.xd-actions{gap:.75rem 1rem;flex-wrap:wrap}
+.xd-actions .is-style-outline .wp-block-button__link{background:#fff!important;color:var(--xd-red)!important;border:2px solid var(--xd-red)!important}
+.xd-actions .is-style-outline .wp-block-button__link:hover,.xd-actions .is-style-outline .wp-block-button__link:focus{background:var(--xd-red)!important;color:#fff!important}
+
+/* Program finder */
+.xd-finder{border-top:1px solid var(--xd-gray);padding-top:1.5rem;margin:0 0 2rem}
+.xd-filters{display:none;margin:0}
+.xd-js .xd-filters{display:block}
+.xd-filters summary{cursor:pointer;font-weight:700;margin:0 0 .75rem;width:fit-content}
+.xd-filters summary:focus-visible{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+.xd-filter-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem 1.5rem}
+.xd-filter-form fieldset{border:0;margin:0;padding:0;min-width:0}
+.xd-filter-form legend{font-weight:700;margin:0 0 .4rem;padding:0}
+.xd-filter-form label.xd-check{position:relative;display:inline-flex!important;align-items:center;width:auto!important;margin:0 .4rem .5rem 0!important;padding:0!important;cursor:pointer;font-weight:400}
+.xd-filter-form .xd-check input{position:absolute!important;opacity:0;width:1px!important;height:1px!important;margin:0!important;border:0;transform:none}
+.xd-filter-form .xd-check span{display:inline-block!important;min-height:0;padding:.4rem .85rem!important;border:1px solid #767676;border-radius:999px;background:#fff;color:var(--xd-ink);font-size:.9375rem!important;line-height:1.3!important;white-space:nowrap}
+.xd-check input:checked + span{background:var(--xd-green);border-color:var(--xd-green);color:#fff}
+.xd-check input:checked + span::before{content:"\2713\00a0"}
+.xd-check input:focus-visible + span{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+.xd-filter-actions{grid-column:1/-1;margin:0}
+.xd-clear{background:none;border:0;padding:.25rem 0;color:var(--xd-red-dark);text-decoration:underline;cursor:pointer;font:inherit;min-height:24px}
+.xd-clear:focus-visible{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+.xd-count{font-weight:700;margin:.75rem 0 0}
+.xd-empty{border:1px dashed #999;padding:1.25rem;margin:0 0 2rem}
+.xd-empty p{margin:0 0 .5rem}
+
+/* Program groups and cards (cards are the theme's own program-card block) */
+.xd-group{margin:0 0 2.5rem}
+.xd-group-intro{max-width:46rem}
+.xd-card{position:relative}
+.xd-card .di-program-card-header{margin-bottom:.5rem}
+.xd-card .entry-categories span{display:inline-block;margin:0 .9rem .35rem 0;color:var(--xd-green);font-weight:700;font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase}
+.xd-card .xd-card-facts{font-weight:700;color:var(--xd-ink);margin:.75rem 0 0}
+.xd-card-link:focus-visible{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+
+/* Bands */
+.xd-band{background:var(--xd-gray-light);padding:1.75rem 2rem;margin:0 0 2.5rem}
+.xd-band h2{margin-top:0}
+.xd-steps{list-style:none;counter-reset:xd;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem 1.5rem;margin:1rem 0 1.25rem;padding:0}
+.xd-steps li{counter-increment:xd;position:relative;padding-left:2.75rem;margin:0}
+.xd-steps li::before{content:counter(xd);position:absolute;left:0;top:0;width:2rem;height:2rem;border-radius:50%;background:var(--xd-red);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.xd-steps strong{display:block}
+.xd-small{font-size:.9375rem;color:var(--xd-ink-2)}
+.xd-partner-band,.xd-more,.xd-contact{border-top:1px solid var(--xd-gray);padding-top:1.5rem;margin:0 0 2.5rem}
+.xd-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem 2.5rem}
+.xd-two h3{margin-top:0}
+.xd-links a{font-weight:700}
+
+/* Program page: first screen */
+.xd-first{display:grid;gap:2rem;margin:0 0 2.75rem}
+.xd-intro .is-style-lead:first-child{margin-top:0}
+@media (min-width:62em){
+  .xd-first{grid-template-columns:minmax(0,1fr) 19rem;grid-template-areas:"intro panel";align-items:start}
+  .xd-first .xd-panel{grid-area:panel;position:sticky;top:3.25rem}
+  .xd-first .xd-intro{grid-area:intro}
+}
+.xd-panel{border:1px solid var(--xd-gray);border-top:6px solid var(--xd-red);background:#fff;padding:1.5rem}
+.xd-panel--open{border-top-color:var(--xd-green)}
+.xd-panel p{margin:0 0 .75rem}
+.xd-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:.25rem .6rem}
+.xd-price-n{font-family:var(--font-ivypresto,Georgia,serif);font-size:2.5rem;line-height:1.05;color:var(--xd-ink)}
+.xd-price-l{font-size:.875rem;color:var(--xd-ink-2)}
+.xd-panel-h{font-size:1rem;line-height:1.3;margin:.25rem 0 .6rem;font-family:inherit;letter-spacing:0}
+.xd-panel p.xd-chip{margin:.25rem 0 .75rem}
+.xd-panel-btn{margin:1rem 0 .9rem}
+.xd-panel-btn .wp-block-button{display:block;width:100%}
+.xd-panel-btn .wp-block-button__link{display:block;width:100%;text-align:center}
+.xd-numbers{margin:1.5rem 0 1rem}
+.xd-note{font-size:.9375rem;color:var(--xd-ink-2)}
+.xd-partner{display:flex;align-items:center;gap:1.25rem;margin-top:1.25rem}
+.xd-partner p{margin:0}
+.xd-partner img{flex:none;width:96px;height:auto}
+.xd-section{margin:0 0 2.5rem}
+
+/* Course lists: native disclosure, styled like the theme's accordion */
+.xd-accordion details{border-top:1px solid var(--xd-gray)}
+.xd-accordion details:last-child{border-bottom:1px solid var(--xd-gray)}
+.xd-accordion summary{list-style:none;cursor:pointer;position:relative;padding:1rem 2.75rem 1rem 0;font-weight:700;font-size:1.125rem;line-height:1.35;color:var(--xd-ink)}
+.xd-accordion summary::-webkit-details-marker{display:none}
+.xd-accordion summary::after{content:"";position:absolute;right:.75rem;top:50%;width:.6rem;height:.6rem;border-right:2px solid var(--xd-red-dark);border-bottom:2px solid var(--xd-red-dark);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.xd-accordion details[open] summary::after{transform:translateY(-25%) rotate(-135deg)}
+.xd-accordion summary:focus-visible{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+.xd-acc-body{padding:0 0 1rem}
+.xd-acc-body p{margin:0}
+
+/* Phone bar: price and next step once the panel scrolls away (phones only) */
+.xd-phonebar{position:fixed;left:0;right:0;bottom:0;z-index:99990;display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#fff;border-top:1px solid var(--xd-gray);box-shadow:0 -2px 8px rgba(0,0,0,.12);padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom))}
+.xd-phonebar p{margin:0;font-size:.9375rem;line-height:1.3}
+.xd-phonebar-btn{flex:none;display:inline-flex;align-items:center;min-height:44px;background:var(--xd-red);color:#fff!important;font-weight:700;text-decoration:none;padding:.5rem 1rem;border-radius:2px}
+.xd-phonebar-btn:focus-visible{outline:3px solid var(--xd-red-dark);outline-offset:2px}
+body.xd-has-bar{padding-bottom:4.75rem}
+html:has(body.xd-has-bar){scroll-padding-bottom:5.5rem}
+@media (min-width:768px){.xd-phonebar{display:none!important}}
+
+/* About page */
+.xd-table-wrap{overflow-x:auto}
+.xd-table{width:100%;border-collapse:collapse;font-size:.9375rem}
+.xd-table th,.xd-table td{border-bottom:1px solid var(--xd-gray);padding:.6rem .5rem;text-align:left;vertical-align:top}
+.xd-table thead th{border-bottom:2px solid var(--xd-ink)}
+
+@media (prefers-reduced-motion:reduce){.xd-accordion summary::after{transition:none}html{scroll-behavior:auto}}
